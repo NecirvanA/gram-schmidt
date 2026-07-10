@@ -1,5 +1,7 @@
 #include <string>
+#pragma once
 
+template <typename T>
 class Vector{
     public:
 
@@ -8,25 +10,25 @@ class Vector{
     Vector(int s); // TODO: add list intialisation 
     ~Vector();
     
-    Vector(const Vector& a); // copy constructor
-    Vector& operator=(const Vector& a); // copy assignment
+    Vector(const Vector<T>& a); // copy constructor
+    Vector<T>& operator=(const Vector<T>& a); // copy assignment
 
-    Vector(Vector&& a); // move constructor
-    Vector& operator=(Vector&& a); // move assignment
+    Vector(Vector<T>&& a); // move constructor
+    Vector<T>& operator=(Vector<T>&& a); // move assignment
 
     // ==================================================
 
-    double& operator[](int i);
-    const double& operator[](int i) const;
+    T& operator[](int i);
+    const T& operator[](int i) const;
 
-    Vector operator+(const Vector& b);
-    Vector operator-(const Vector& b);
-    double operator*(const Vector& b); // dot product
-    Vector operator*(const double& b); // scalar multiplication
+    Vector<T> operator+(const Vector<T>& b);
+    Vector<T> operator-(const Vector<T>& b);
+    double operator*(const Vector<T>& b); // dot product
+    Vector<T> operator*(const double& b); // scalar multiplication
     
-    Vector& operator+=(const Vector b);
-    Vector& operator-=(const Vector b);
-    Vector& operator*=(const double b);
+    Vector<T>& operator+=(const Vector<T>& b);
+    Vector<T>& operator-=(const Vector<T>& b);
+    Vector<T>& operator*=(const double& b);
 
     int dim();
     std::string toString();
@@ -34,5 +36,7 @@ class Vector{
     private:
  
     int size;
-    double* elem;
+    T* elem;
 };
+
+#include "Vector.cpp"

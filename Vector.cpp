@@ -1,21 +1,25 @@
 #include "Vector.h"
 
-Vector::Vector(int s) : size{s}, elem{new double [s]} {};
+template <typename T>
+Vector<T>::Vector(int s) : size{s}, elem{new T[s]} {}
 
-Vector::~Vector(){
+template <typename T>
+Vector<T>::~Vector(){
     delete[] elem;
     elem = nullptr;
 }
 
-Vector::Vector(const Vector& a): elem{new double[a.size]}, size{a.size}{
-    for(int i = 0; i < size; i++){
+template <typename T>
+Vector<T>::Vector(const Vector& a): elem{new T[a.size]}, size{a.size}{
+    for(auto i = 0; i < size; i++){
         elem[i] = a.elem[i];
     }
 }
 
-Vector& Vector::operator=(const Vector& a){
-    double *p = new double[a.size];
-    for(int i = 0; i < a.size; i++){
+template <typename T>
+Vector<T>& Vector<T>::operator=(const Vector& a){
+    T *p = new T[a.size];
+    for(auto i = 0; i < a.size; i++){
         p[i] = a.elem[i];
     }
 
@@ -25,12 +29,14 @@ Vector& Vector::operator=(const Vector& a){
     return *this;
 }
 
-Vector::Vector(Vector&& a): elem{a.elem}, size{a.size}{
+template <typename T>
+Vector<T>::Vector(Vector&& a): elem{a.elem}, size{a.size}{
     a.elem = nullptr;
     a.size = 0;
 }
 
-Vector& Vector::operator=(Vector&& a){
+template <typename T>
+Vector<T>& Vector<T>::operator=(Vector&& a){
     delete[] elem;
 
     elem = a.elem;
@@ -42,90 +48,101 @@ Vector& Vector::operator=(Vector&& a){
     return *this;
 }
 
-double& Vector::operator[](int i){ // TODO: throw errors
+template <typename T>
+T& Vector<T>::operator[](int i){ // TODO: throw errors
     return *(elem + i);
 }
 
-const double& Vector::operator[](int i) const{
+template <typename T>
+const T& Vector<T>::operator[](int i) const{
     return *(elem + i);
 }
 
-Vector Vector::operator+(const Vector& b){
+template <typename T>
+Vector<T> Vector<T>::operator+(const Vector& b){
     // TODO: throw error if dimensions are wrong
 
-    Vector result(size);
+    Vector<T> result(size);
 
-    for(int i = 0; i < size; i++){
+    for(auto i = 0; i < size; i++){
         result[i] = (*this)[i] + b[i];
     }
 
     return result;
 }
 
-Vector Vector::operator-(const Vector& b){
-    Vector result(size);
+template <typename T>
+Vector<T> Vector<T>::operator-(const Vector& b){
+    Vector<T> result(size);
 
-    for(int i = 0; i < size; i++){
+    for(auto i = 0; i < size; i++){
         result[i] = (*this)[i] - b[i];
     }
 
     return result;
 }
 
-double Vector::operator*(const Vector& b){
-    double result {};
+template <typename T>
+double Vector<T>::operator*(const Vector<T>& b){
+    T result {};
 
-    for(int i = 0; i < size; i++){
+    for(auto i = 0; i < size; i++){
         result += (*this)[i] * b[i];
     }
 
     return result;
 }
 
-Vector Vector::operator*(const double& b){
-    Vector result(size);
+template <typename T>
+Vector<T> Vector<T>::operator*(const double& b){ // TODO: fix the assumption that * works.
+    Vector<T> result(size);
 
-    for(int i = 0; i < size; i++){
+    for(auto i = 0; i < size; i++){
         result[i] = (*this)[i] * b;
     }
 
     return result;
 }
 
-Vector& Vector::operator+=(const Vector b){
-    for(int i = 0; i < size; i++){
+template <typename T>
+Vector<T>& Vector<T>::operator+=(const Vector<T>& b){
+    for(auto i = 0; i < size; i++){
         (*this)[i] += b[i];
     }
 
     return *this;
 }
 
-Vector& Vector::operator-=(const Vector b){
-    for(int i = 0; i < size; i++){
+template <typename T>
+Vector<T>& Vector<T>::operator-=(const Vector<T>& b){
+    for(auto i = 0; i < size; i++){
         (*this)[i] -= b[i];
     }
 
     return *this;
 }
 
-Vector& Vector::operator*=(const double b){
-    for(int i = 0; i < size; i++){
+template <typename T>
+Vector<T>& Vector<T>::operator*=(const double& b){
+    for(auto i = 0; i < size; i++){
         (*this)[i] *= b;
     }
 
     return *this;
 }
 
-int Vector::dim(){
+template <typename T>
+int Vector<T>::dim(){
     return size;
 }
 
-std::string Vector::toString(){
+template <typename T>
+std::string Vector<T>::toString(){
     std::string s {};
     
     s += '[';
 
-    for(int i = 0; i < size - 1; i++){
+    for(auto i = 0; i < size - 1; i++){
         s += std::to_string((*this)[i]);
         s += ", ";
     }
