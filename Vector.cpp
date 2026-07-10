@@ -1,6 +1,9 @@
 #include "Vector.h"
 
 template <typename T>
+Vector<T>::Vector() : size{0}, elem{nullptr} {}
+
+template <typename T>
 Vector<T>::Vector(int s) : size{s}, elem{new T[s]} {}
 
 template <typename T>
@@ -83,11 +86,33 @@ Vector<T> Vector<T>::operator-(const Vector& b){
 }
 
 template <typename T>
+double Vector<T>::operator*(const Vector<T>& b) const{
+    T result {};
+
+    for(auto i = 0; i < size; i++){
+        result += (*this)[i] * b[i];
+    }
+
+    return result;
+}
+
+template <typename T>
 double Vector<T>::operator*(const Vector<T>& b){
     T result {};
 
     for(auto i = 0; i < size; i++){
         result += (*this)[i] * b[i];
+    }
+
+    return result;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator*(const double& b) const{ // TODO: fix the assumption that * works.
+    Vector<T> result(size);
+
+    for(auto i = 0; i < size; i++){
+        result[i] = (*this)[i] * b;
     }
 
     return result;
@@ -133,6 +158,11 @@ Vector<T>& Vector<T>::operator*=(const double& b){
 
 template <typename T>
 int Vector<T>::dim(){
+    return size;
+}
+
+template <typename T>
+int Vector<T>::dim() const{
     return size;
 }
 

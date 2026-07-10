@@ -7,6 +7,7 @@ class Vector{
 
     // ==================================================
 
+    Vector();
     Vector(int s); // TODO: add list intialisation 
     ~Vector();
     
@@ -25,12 +26,16 @@ class Vector{
     Vector<T> operator-(const Vector<T>& b);
     double operator*(const Vector<T>& b); // dot product
     Vector<T> operator*(const double& b); // scalar multiplication
+
+    double operator*(const Vector<T>& b) const; // dot product
+    Vector<T> operator*(const double& b) const; // scalar multiplication
     
     Vector<T>& operator+=(const Vector<T>& b);
     Vector<T>& operator-=(const Vector<T>& b);
     Vector<T>& operator*=(const double& b);
 
     int dim();
+    int dim() const;
     std::string toString();
 
     private:
