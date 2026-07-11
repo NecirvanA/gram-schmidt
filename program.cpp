@@ -13,6 +13,17 @@ Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normal
             u = u - proj(vectors[i], result[j]);
         }
 
+        T normal = 0;
+        for(int i = 0; i < u.dim(); i++){
+            normal += u[i] * u[i];
+        }
+
+        normal = sqrt(normal);
+
+        for(int i = 0; i < u.dim(); i++){
+            u[i] /= normal;
+        }
+
         result[i] = u;
     }
 
