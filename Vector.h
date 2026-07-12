@@ -34,9 +34,9 @@ class Vector{
     Vector<T>& operator-=(const Vector<T>& b);
     Vector<T>& operator*=(const double& b);
 
-    int dim();
     int dim() const;
     std::string toString();
+    void push_back(const T& a);
 
     private:
  

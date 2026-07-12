@@ -3,6 +3,11 @@
 #include <cmath>
 
 template <typename T>
+Vector<T> proj(const Vector<T>& a, const Vector<T>& b){
+    return b * ((a * b) / (b * b)); // TODO: fix how this only works one way round
+}
+
+template <typename T>
 Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normalise vectors too
     Vector<Vector<T>> result(vectors.dim());
 
@@ -30,12 +35,20 @@ Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normal
     return result;
 }
 
-template <typename T>
-Vector<T> proj(const Vector<T>& a, const Vector<T>& b){
-    return b * ((a * b) / (b * b)); // TODO: fix how this only works one way round
-}
-
 int main(){
+    /*
+    std::cout << "Enter dimension: " << std::endl;
+    
+    int dim {};
+    std::cin >> dim;
+
+    Vector<Vector<double>> vectors;
+
+    while(true){
+        std::cout << "Enter vectors (enter nothing to stop): " << '\n';
+    }
+    */
+
     Vector<double> a(3);
     Vector<double> b(3);
     Vector<double> c(3);

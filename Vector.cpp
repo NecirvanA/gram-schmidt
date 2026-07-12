@@ -4,7 +4,7 @@ template <typename T>
 Vector<T>::Vector() : size{0}, elem{nullptr} {}
 
 template <typename T>
-Vector<T>::Vector(int s) : size{s}, elem{new T[s]} {}
+Vector<T>::Vector(int s) : size{s}, elem{new T[s]()} {}
 
 template <typename T>
 Vector<T>::~Vector(){
@@ -13,7 +13,7 @@ Vector<T>::~Vector(){
 }
 
 template <typename T>
-Vector<T>::Vector(const Vector& a): elem{new T[a.size]}, size{a.size}{
+Vector<T>::Vector(const Vector& a): size{a.size}, elem{new T[a.size]}{
     for(auto i = 0; i < size; i++){
         elem[i] = a.elem[i];
     }
@@ -40,7 +40,7 @@ Vector<T>::Vector(Vector&& a): elem{a.elem}, size{a.size}{
 
 template <typename T>
 Vector<T>& Vector<T>::operator=(Vector&& a){
-    delete[] elem;
+    T* old = elem;
 
     elem = a.elem;
     size = a.size;
@@ -48,6 +48,8 @@ Vector<T>& Vector<T>::operator=(Vector&& a){
     a.elem = nullptr;
     a.size = 0;
 
+    delete[] old;
+    
     return *this;
 }
 
@@ -97,29 +99,7 @@ double Vector<T>::operator*(const Vector<T>& b) const{
 }
 
 template <typename T>
-double Vector<T>::operator*(const Vector<T>& b){
-    T result {};
-
-    for(auto i = 0; i < size; i++){
-        result += (*this)[i] * b[i];
-    }
-
-    return result;
-}
-
-template <typename T>
 Vector<T> Vector<T>::operator*(const double& b) const{ // TODO: fix the assumption that * works.
-    Vector<T> result(size);
-
-    for(auto i = 0; i < size; i++){
-        result[i] = (*this)[i] * b;
-    }
-
-    return result;
-}
-
-template <typename T>
-Vector<T> Vector<T>::operator*(const double& b){ // TODO: fix the assumption that * works.
     Vector<T> result(size);
 
     for(auto i = 0; i < size; i++){
@@ -157,17 +137,16 @@ Vector<T>& Vector<T>::operator*=(const double& b){
 }
 
 template <typename T>
-int Vector<T>::dim(){
-    return size;
-}
-
-template <typename T>
 int Vector<T>::dim() const{
     return size;
 }
 
 template <typename T>
 std::string Vector<T>::toString(){
+    if(size == 0){
+        return "[ ]";
+    }
+    
     std::string s {};
     
     s += '[';
@@ -181,4 +160,18 @@ std::string Vector<T>::toString(){
     s += "]";
 
     return s;
+}
+
+template <typename T>
+void Vector<T>::push_back(const T& a){
+    int new_size = size + 1;
+    Vector<T> new_vector(new_size);
+
+    for(int i = 0; i < size; i++){
+        new_vector[i] = elem[i];
+    }
+
+    new_vector[size] = a;
+
+    *this = std::move(new_vector);
 }
