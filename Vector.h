@@ -39,7 +39,7 @@ class Vector{
     void push_back(const T& a);
 
     private:
- 
+
     int size;
     T* elem;
 };

@@ -8,7 +8,7 @@ Vector<T> proj(const Vector<T>& a, const Vector<T>& b){
 }
 
 template <typename T>
-Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normalise vectors too
+Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){
     Vector<Vector<T>> result(vectors.dim());
 
     for(int i = 0; i < vectors.dim(); i++){
@@ -25,6 +25,11 @@ Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normal
 
         normal = sqrt(normal);
 
+        if (normal < 1e-10) {
+            // vector is linearly dependent
+            continue;
+        }
+
         for(int i = 0; i < u.dim(); i++){
             u[i] /= normal;
         }
@@ -35,35 +40,43 @@ Vector<Vector<T>> gramSchmidt(const Vector<Vector<T>>& vectors){ // TODO: normal
     return result;
 }
 
-int main(){
-    /*
-    std::cout << "Enter dimension: " << std::endl;
-    
-    int dim {};
+int main() {
+    int dim;
+    std::cout << "Enter vector dimension: ";
     std::cin >> dim;
 
-    Vector<Vector<double>> vectors;
+    Vector<Vector<double>> sequence;
 
-    while(true){
-        std::cout << "Enter vectors (enter nothing to stop): " << '\n';
+    while (true) {
+        Vector<double> v(dim);
+
+        std::cout << "\nEnter " << dim << " components:\n";
+        for (int i = 0; i < dim; i++) {
+            std::cin >> v[i];
+        }
+
+        sequence.push_back(v);
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        std::string again;
+        std::cout << "Add another vector? (Y/n): ";
+        std::getline(std::cin, again);
+
+        if (!again.empty() && (again[0] == 'n' || again[0] == 'N'))
+            break;
     }
-    */
 
-    Vector<double> a(3);
-    Vector<double> b(3);
-    Vector<double> c(3);
+    if (sequence.dim() == 0) {
+        std::cout << "No vectors entered.\n";
+        return 0;
+    }
 
-    a[0] = 1; a[1] = 1; a[2] = 0;
-    b[0] = 1; b[1] = 0; b[2] = 1;
-    c[0] = 0; c[1] = 1; c[2] = 1;
+    auto result = gramSchmidt(sequence);
 
-    Vector<Vector<double>> sequence(3);
-    sequence[0] = a; sequence[1] = b; sequence[2] = c;
-
-    Vector<Vector<double>> result = gramSchmidt(sequence);
-
-    for(int i = 0; i < result.dim(); i++){
-        std::cout << result[i].toString() << ' ';
+    std::cout << "\nOrthonormal basis:\n";
+    for (int i = 0; i < result.dim(); i++) {
+        std::cout << "u" << i + 1 << " = " << result[i].toString() << '\n';
     }
 
     return 0;
