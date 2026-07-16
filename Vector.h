@@ -1,4 +1,6 @@
 #include <string>
+#include <iostream>
+
 #pragma once
 
 template <typename T>
@@ -35,7 +37,6 @@ class Vector{
     Vector<T>& operator*=(const double& b);
 
     int dim() const;
-    std::string toString();
     void push_back(const T& a);
 
     private:
@@ -43,5 +44,8 @@ class Vector{
     int size;
     T* elem;
 };
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Vector<T>& v);
 
 #include "Vector.cpp"

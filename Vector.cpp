@@ -142,27 +142,6 @@ int Vector<T>::dim() const{
 }
 
 template <typename T>
-std::string Vector<T>::toString(){
-    if(size == 0){
-        return "[ ]";
-    }
-    
-    std::string s {};
-    
-    s += '[';
-
-    for(auto i = 0; i < size - 1; i++){
-        s += std::to_string((*this)[i]);
-        s += ", ";
-    }
-
-    s += std::to_string((*this)[size - 1]);
-    s += "]";
-
-    return s;
-}
-
-template <typename T>
 void Vector<T>::push_back(const T& a){
     int new_size = size + 1;
     Vector<T> new_vector(new_size);
@@ -174,4 +153,15 @@ void Vector<T>::push_back(const T& a){
     new_vector[size] = a;
 
     *this = std::move(new_vector);
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const Vector<T>& v){
+    os << '[';
+    for(int i = 0; i < v.dim(); i++){
+        os << v[i];
+        if(i != v.dim() - 1) os << ", ";
+    }
+    os << ']';
+    return os;
 }

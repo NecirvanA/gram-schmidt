@@ -75,9 +75,7 @@ int main() {
     auto result = gramSchmidt(sequence);
 
     std::cout << "\nOrthonormal basis:\n";
-    for (int i = 0; i < result.dim(); i++) {
-        std::cout << "u" << i + 1 << " = " << result[i].toString() << '\n';
-    }
+    std::cout << result;
 
     return 0;
 }
